@@ -3,11 +3,14 @@ package org.java.demo.pojo;
 import java.util.Arrays;
 import java.util.List;
 
+import org.java.demo.auth.pojo.User;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -31,13 +34,17 @@ public class Image {
 	@ManyToMany
 	private List<Category> categories;
 	
+	@ManyToOne
+	private User user;
+	
 	public Image() {};
 	
-	public Image(String title, String description, String url, boolean visible, Category...categories) {
+	public Image(String title, String description, String url, boolean visible,User user, Category...categories) {
 		setTitle(title);
 		setDescription(description);
 		setUrl(url);
 		setVisible(visible);
+		setUser(user);
 		setNewCategories(categories);
 		
 	}
@@ -102,6 +109,15 @@ public class Image {
 		getCategories().remove(category);
 	}
 	
+	
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	@Override
 	public String toString() {
 		

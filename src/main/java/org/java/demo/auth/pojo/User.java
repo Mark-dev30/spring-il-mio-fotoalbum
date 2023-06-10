@@ -3,18 +3,22 @@ package org.java.demo.auth.pojo;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import org.java.demo.pojo.Image;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -35,6 +39,9 @@ public class User implements UserDetails{
 	
 	@ManyToMany(fetch = FetchType.EAGER)
 	private Set<Role> roles;
+	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+	private List<Image> image;
 	
 	public User() { }
 	public User(String username, String password, Role... roles) {
@@ -105,6 +112,13 @@ public class User implements UserDetails{
 		setRoles(new HashSet<>(Arrays.asList(roles)));
 	}
 	
+	
+	public List<Image> getImage() {
+		return image;
+	}
+	public void setImage(List<Image> image) {
+		this.image = image;
+	}
 	@Override
 	public String toString() {
 		
