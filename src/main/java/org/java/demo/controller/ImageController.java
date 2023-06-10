@@ -2,8 +2,10 @@ package org.java.demo.controller;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.java.demo.auth.pojo.User;
+import org.java.demo.auth.pojo.Role;
 import org.java.demo.auth.repo.UserRepo;
 import org.java.demo.auth.serv.UserServ;
 import org.java.demo.pojo.Category;
@@ -43,9 +45,19 @@ public class ImageController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String userName = authentication.getName();
 		User user = userServ.findByUsernameWithImage(userName).get();
-		System.err.println(user.getImage());
-		List<Image> images = imageServ.findAll();
-		model.addAttribute("images",images);
+		boolean isAdmin = authentication.getAuthorities().stream()
+	            .anyMatch(role -> role.getAuthority().equals("ADMIN"));
+	    
+	    if (isAdmin) {
+	    	List<Image> images = user.getImage();
+	    	model.addAttribute("images",images);
+	    } else {
+	        
+	      List<Image> images = imageServ.findAll();
+	      model.addAttribute("images",images);
+	    }
+		
+		
 		
 		return "index";
 	}
