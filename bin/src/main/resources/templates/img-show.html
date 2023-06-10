@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.3/css/bootstrap.min.css}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<title>Insert title here</title>
+</head>
+<body>
+	<div th:object="${image}">
+		<h1>Show [[ *{title} ]]</h1>
+		<img th:alt="@{${image.title}}" th:src="@{${image.url}}" width="150px">
+		<h6>[[ *{title} ]]</h6>
+		<p>[[ *{description} ]]</p>
+	</div>
+</body>
+</html>
