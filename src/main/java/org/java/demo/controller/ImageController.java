@@ -1,11 +1,19 @@
 package org.java.demo.controller;
 
 import java.util.List;
+import java.util.Optional;
+
+import org.java.demo.auth.pojo.User;
+import org.java.demo.auth.repo.UserRepo;
+import org.java.demo.auth.serv.UserServ;
 import org.java.demo.pojo.Category;
 import org.java.demo.pojo.Image;
 import org.java.demo.serv.CategoryServ;
 import org.java.demo.serv.ImageServ;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,9 +35,15 @@ public class ImageController {
 	
 	@Autowired
 	private CategoryServ categoryServ;
+	@Autowired
+	private UserServ userServ;
 	
 	@GetMapping("/")
 	public String getHome(Model model) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String userName = authentication.getName();
+		User user = userServ.findByUsernameWithImage(userName).get();
+		System.err.println(user.getImage());
 		List<Image> images = imageServ.findAll();
 		model.addAttribute("images",images);
 		

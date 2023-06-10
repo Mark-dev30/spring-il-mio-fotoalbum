@@ -3,6 +3,7 @@ package org.java.demo.serv;
 import java.util.List;
 import java.util.Optional;
 
+import org.java.demo.auth.pojo.User;
 import org.java.demo.pojo.Image;
 import org.java.demo.repo.ImageRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,10 @@ public class ImageServ {
 	public Optional<Image> findById(int id){
 		
 		return imageRepo.findById(id);
+	}
+	
+	public List<Image> findByUser(User user){
+		return imageRepo.findByUser(user);
 	}
 	
 	public Image save(Image image) {

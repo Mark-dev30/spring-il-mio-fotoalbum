@@ -3,6 +3,7 @@ package org.java.demo.auth.serv;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.Hibernate;
 import org.java.demo.auth.pojo.User;
 import org.java.demo.auth.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class UserServ implements UserDetailsService {
@@ -30,6 +33,15 @@ public class UserServ implements UserDetailsService {
 		return userRepo.save(user);
 	}
 	
+	@Transactional
+	public Optional<User> findByUsernameWithImage(String username){
+		
+		Optional<User> userOpt = userRepo.findByUsername(username);
+		Hibernate.initialize(userOpt.get().getImage());
+		
+		return userOpt;
+	}
+
 	@Override
 	public UserDetails loadUserByUsername(String username) 
 			throws UsernameNotFoundException {
