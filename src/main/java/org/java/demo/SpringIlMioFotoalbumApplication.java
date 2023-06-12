@@ -93,6 +93,14 @@ public class SpringIlMioFotoalbumApplication implements CommandLineRunner{
 				"Beautiful photo that takes a specimen of monkey",
 				"https://images2-wpc.corriereobjects.it/0NleBhvbT6BiRYCkrklb9nirElo=/fit-in/1050x700/style.corriere.it/assets/uploads/2018/02/Contemplation-Peter-Delaney-Wildlife-Photographer-of-the-Year.jpg",
 				true,userAdmin3, ct1,ct3);
+		Image im7 = new Image("Iceland",
+				"Beautiful photo Iceland",
+				"https://www.consigliamidove.it/wp-content/uploads/2021/01/Islanda.jpg",
+				true,userAdmin3, ct1,ct3);
+		Image im8 = new Image("Life",
+				"Life in a photo",
+				"https://ugc.futurelearn.com/uploads/images/d4/e8/header_d4e82da6-ca9d-4a4a-aa24-a4d70d004f49.jpg",
+				true,userAdmin3, ct1,ct3);
 		
 		imageServ.save(im1);
 		imageServ.save(im2);
@@ -100,6 +108,8 @@ public class SpringIlMioFotoalbumApplication implements CommandLineRunner{
 		imageServ.save(im4);
 		imageServ.save(im5);
 		imageServ.save(im6);
+		imageServ.save(im7);
+		imageServ.save(im8);
 		
 	}
 }

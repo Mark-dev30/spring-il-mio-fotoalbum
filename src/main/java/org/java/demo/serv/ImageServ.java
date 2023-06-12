@@ -3,11 +3,14 @@ package org.java.demo.serv;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.Hibernate;
 import org.java.demo.auth.pojo.User;
 import org.java.demo.pojo.Image;
 import org.java.demo.repo.ImageRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class ImageServ {
@@ -41,5 +44,14 @@ public class ImageServ {
 	public void deleteImage(Image image) {
 		
 		 imageRepo.delete(image);
+	}
+	
+	@Transactional
+	public Optional<Image> findByIdWithUser(int id){
+		
+		Optional<Image> imageId = imageRepo.findById(id);
+		Hibernate.initialize(imageId.get().getUser());
+		
+		return imageId;
 	}
 }

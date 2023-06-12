@@ -11,6 +11,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -41,6 +43,7 @@ public class User implements UserDetails{
 	private Set<Role> roles;
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+	@JsonManagedReference
 	private List<Image> image;
 	
 	public User() { }

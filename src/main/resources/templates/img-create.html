@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="ISO-8859-1">
 <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.3/css/bootstrap.min.css}" />
@@ -17,8 +17,8 @@
 		<label>Url</label>
 		<input type="text" name="url" th:value="*{url}">
 		<label class="text-danger" th:if="${errors != null && errors.hasFieldErrors('url')}">[[ ${errors.getFieldError('url').defaultMessage}]]</label>
-		<label>Visible</label>
-		<input type="checkbox" role="switch" name="visible">
+		<label sec:authorize="hasAuthority('SUPERADMIN')">Visible</label>
+		<input type="checkbox" role="switch" name="visible" sec:authorize="hasAuthority('SUPERADMIN')">
 		<div class="form-check" th:each="category : ${categories}" th:object="${category}">
 			<input th:id="${'category-' + category.id}" th:value="*{id}" class="form-check-input" type="checkbox" name="categories" >
 			<label th:for="${'category-' + category.id}" class="form-check-label">

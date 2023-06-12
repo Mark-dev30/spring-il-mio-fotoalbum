@@ -11,4 +11,5 @@ import org.springframework.stereotype.Repository;
 public interface ImageRepo extends JpaRepository<Image, Integer> {
 	public List<Image> findByTitleContaining(String title);
 	public List<Image> findByUser(User user);
+	public List<Image> findByVisible(boolean visible);
 }

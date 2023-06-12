@@ -1,8 +1,10 @@
 package org.java.demo.controller;
 
+import java.awt.image.FilteredImageSource;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.java.demo.auth.pojo.User;
 import org.java.demo.auth.pojo.Role;
@@ -49,7 +51,13 @@ public class ImageController {
 	            .anyMatch(role -> role.getAuthority().equals("ADMIN"));
 	    
 	    if (isAdmin) {
-	    	List<Image> images = user.getImage();
+	    	List<Image> imagesuser = user.getImage();
+	    	List<Image> images = imagesuser.stream()
+                    .filter(image -> image.isVisible())
+                    .collect(Collectors.toList());
+	    	
+	    	
+	    	
 	    	model.addAttribute("images",images);
 	    } else {
 	        
@@ -61,14 +69,7 @@ public class ImageController {
 		
 		return "index";
 	}
-	@GetMapping("/create")
-	public String getImgCreate(Model model) {
-		List<Category> categories = categoryServ.findAll();
-		model.addAttribute("image", new Image());
-		model.addAttribute("categories", categories);
-		
-		return "img-create";
-	}
+	
 	@PostMapping("/image/title")
 	public String getImageByTitle(Model model,@RequestParam(required = false) String title) {
 		List<Image> images = imageServ.findByNameContaining(title);
@@ -85,8 +86,21 @@ public class ImageController {
 		return "img-show";
 	}
 	
+	@GetMapping("/create")
+	public String getImgCreate(Model model) {
+		List<Category> categories = categoryServ.findAll();
+		model.addAttribute("image", new Image());
+		model.addAttribute("categories", categories);
+		
+		return "img-create";
+	}
+	
 	@PostMapping("/create")
 	public String storeImageCreate(Model model, @Valid @ModelAttribute Image image, BindingResult bindingResult) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String userName = authentication.getName();
+		User user = userServ.findByUsernameWithImage(userName).get();
+		image.setUser(user);
 		if(bindingResult.hasErrors()) {
 			
 			List<Category> categories = categoryServ.findAll();
@@ -94,6 +108,10 @@ public class ImageController {
 			model.addAttribute("categories", categories);
 			model.addAttribute("errors", bindingResult);
 			return "img-create";
+		}
+		if( authentication.getAuthorities().stream()
+	            .anyMatch(role -> role.getAuthority().equals("ADMIN"))){
+			image.setVisible(true);
 		}
 		
 		imageServ.save(image);
@@ -104,16 +122,20 @@ public class ImageController {
 	@GetMapping("/update/{id}")
 	public String editImage(Model model, @PathVariable int id) {
 		List<Category> categories = categoryServ.findAll();
+		List<User> users = userServ.findAll();
 		Image image = imageServ.findById(id).get();
 		model.addAttribute("image", image);
 		model.addAttribute("categories", categories);
+		model.addAttribute("users", users);
 		
 		return "img-update";
 	}
 	
 	@PostMapping("/update/{id}")
 	public String updateImage(Model model, @PathVariable int id, @Valid @ModelAttribute Image image, BindingResult bindingResult) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		List<Category> categories = categoryServ.findAll();
+		System.err.println(image.getUser());
 		if(bindingResult.hasErrors()) {
 			model.addAttribute("image",image);
 			model.addAttribute("categories", categories);
@@ -121,6 +143,10 @@ public class ImageController {
 			
 			return "img-update";
 			
+		}
+		if( authentication.getAuthorities().stream()
+	            .anyMatch(role -> role.getAuthority().equals("ADMIN"))){
+			image.setVisible(true);
 		}
 		imageServ.save(image);
 		

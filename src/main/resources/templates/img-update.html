@@ -25,6 +25,9 @@
 				[[ *{name} ]]
 			</label>
 		</div>
+		<select name="user" th:value="image.user.id" hidden>
+			<option th:each="user : ${users}" th:object="${user}" th:selected="${image.user.id} == *{id}" th:value="*{id}">[[ *{id}]]</option>
+		</select>
 		<button class="btn btn-primary" type="submit" value="UPDATE">Submit</button>
 		
 	</form>

@@ -28,17 +28,10 @@ public class ApiController {
 	private MessageServ messageServ;
 
 	@GetMapping("/images")
-	public ResponseEntity<List<Image>> getImage(@RequestParam(required = false) String title){
+	public ResponseEntity<List<Image>> getImage(){
 		
-		if(title == null) {
-			List<Image> images = imageServ.findAll();
-			return new ResponseEntity<>(images, HttpStatus.OK);
-		}
-		else {
-			List<Image> images = imageServ.findByNameContaining(title);
-			
-			return new ResponseEntity<>(images, HttpStatus.OK);
-		}
+		List<Image> images = imageServ.findAll();
+		return new ResponseEntity<>(images, HttpStatus.OK);
 		
 		
 	}

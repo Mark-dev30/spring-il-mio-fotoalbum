@@ -42,7 +42,27 @@ export default {
 </script>
 
 <template>
-    <h1>Images:</h1>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-6">
+                <input type="text" class="form-control" placeholder="Title" v-model="this.title">
+                <button @click="searchImages()" class="btn btn-primary">Search</button>
+            </div>
+            <div class="row">
+                <div class="col-3 mt-3" v-for="image in images">
+                    <div class="card" style="width: 18rem;">
+                        <img :src="image.url" class="card-img-top" :alt="image.title">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ image.title }}</h5>
+                            <p class="card-text text-truncate">{{ image.description }}.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--     <h1>Images:</h1>
     <div>
         <input type="text" v-model="this.title">
         <button @click="searchImages()">Search</button>
@@ -63,7 +83,13 @@ export default {
             <input type="text" name="message" v-model="message.message">
         </div>
         <input type="submit" value="CREATE">
-    </form>
+    </form> -->
 </template>
 
-<style scoped></style>
+<style scoped>
+.card-img-top {
+    width: 100%;
+    height: 15vw;
+    object-fit: cover;
+}
+</style>

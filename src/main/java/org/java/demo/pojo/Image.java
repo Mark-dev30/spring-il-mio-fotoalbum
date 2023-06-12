@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.java.demo.auth.pojo.User;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -35,6 +37,7 @@ public class Image {
 	private List<Category> categories;
 	
 	@ManyToOne
+	@JsonBackReference
 	private User user;
 	
 	public Image() {};
