@@ -1,6 +1,7 @@
 package org.java.demo.api.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.java.demo.pojo.Image;
 import org.java.demo.pojo.Message;
@@ -28,10 +29,23 @@ public class ApiController {
 	private MessageServ messageServ;
 
 	@GetMapping("/images")
-	public ResponseEntity<List<Image>> getImage(){
+	public ResponseEntity<List<Image>> getImage(@RequestParam(required = false) String title){
 		
-		List<Image> images = imageServ.findAll();
-		return new ResponseEntity<>(images, HttpStatus.OK);
+		if(title == null) {
+			List<Image> imagesAll = imageServ.findAll();
+			List<Image> images = imagesAll.stream()
+                    .filter(image -> image.isVisible())
+                    .collect(Collectors.toList());
+			return new ResponseEntity<>(images, HttpStatus.OK);
+		}
+		else {
+			List<Image> imagesAll = imageServ.findByNameContaining(title);
+			List<Image> images = imagesAll.stream()
+                    .filter(image -> image.isVisible())
+                    .collect(Collectors.toList());
+			
+			return new ResponseEntity<>(images, HttpStatus.OK);
+		}
 		
 		
 	}

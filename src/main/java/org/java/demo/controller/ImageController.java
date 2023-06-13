@@ -1,14 +1,11 @@
 package org.java.demo.controller;
 
-import java.awt.image.FilteredImageSource;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.java.demo.auth.pojo.User;
 import org.java.demo.auth.pojo.Role;
-import org.java.demo.auth.repo.UserRepo;
+import org.java.demo.auth.pojo.User;
 import org.java.demo.auth.serv.UserServ;
 import org.java.demo.pojo.Category;
 import org.java.demo.pojo.Image;
@@ -17,7 +14,6 @@ import org.java.demo.serv.ImageServ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -55,8 +51,6 @@ public class ImageController {
 	    	List<Image> images = imagesuser.stream()
                     .filter(image -> image.isVisible())
                     .collect(Collectors.toList());
-	    	
-	    	
 	    	
 	    	model.addAttribute("images",images);
 	    } else {
@@ -134,6 +128,8 @@ public class ImageController {
 	@PostMapping("/update/{id}")
 	public String updateImage(Model model, @PathVariable int id, @Valid @ModelAttribute Image image, BindingResult bindingResult) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String userName = authentication.getName();
+		User user = userServ.findByUsernameWithImage(userName).get();
 		List<Category> categories = categoryServ.findAll();
 		System.err.println(image.getUser());
 		if(bindingResult.hasErrors()) {

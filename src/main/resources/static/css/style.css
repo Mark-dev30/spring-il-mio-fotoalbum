@@ -11,3 +11,6 @@
     height: 15vw;
     object-fit: cover;
 }
+.hidden{
+	display: none;
+}

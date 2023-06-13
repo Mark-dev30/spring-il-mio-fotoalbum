@@ -43,7 +43,8 @@ export default {
 
 <template>
     <div class="container-fluid">
-        <div class="row">
+        <div class="row mt-3">
+            <h1>Images:</h1>
             <div class="col-6">
                 <input type="text" class="form-control" placeholder="Title" v-model="this.title">
                 <button @click="searchImages()" class="btn btn-primary">Search</button>

@@ -12,7 +12,7 @@
 			<div class="col-12">
 				<a href="/logout">LOGOUT</a>
 				<a class="btn btn-success mb-4" th:href="@{/create}">New Image</a>
-				<a class="btn btn-success mb-4" th:href="@{/category}">Categories</a>
+				<a class="btn btn-success mb-4" th:href="@{/category}" sec:authorize="hasAuthority('SUPERADMIN')">Categories</a>
 				<div>
 					<form th:action="@{/image/title}" method="POST">
 						<div class="mb-3">
@@ -40,9 +40,5 @@
 			</div>
 		</div>
 	</div>
-	
-
-	
-
 </body>
 </html>
