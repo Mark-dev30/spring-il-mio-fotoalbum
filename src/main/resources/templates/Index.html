@@ -27,13 +27,18 @@
 		<div class="row">
 			<div class="col-3 mt-4" th:if="${images.size() > 0}" th:each="image : ${images}" th:object="${image}">
 				<a th:href="@{/show/{id} (id=*{id})}" class="text-decoration-none text-center">
-					<div class="card" style="width: 18rem;">
+					<div class="card text-center" style="width: 18rem;" >
 						  <img th:alt="@{${image.title}}" th:src="@{${image.url}}" class="card-img-top" >
 						  <div class="card-body">
-						    <h5 class="card-title">[[ *{title} ]]</h5>
-						    <p class="card-text text-truncate">[[ *{description} ]]</p>
-						    <a th:href="@{/update/{id} (id=*{id})}" class="btn btn-warning text-white">Update <i class="fa-solid fa-pen"></i></a>
-							<a th:href="@{/delete/{id} (id=*{id})}" class="btn btn-danger">Delete <i class="fa-solid fa-trash"></i></a>
+							<h5 class="card-title">[[ *{title} ]]</h5>
+						  	<p class="card-text text-truncate">[[ *{description} ]]</p>
+							<div class="mb-4">
+								<span class="badge text-bg-primary me-2" th:each="category : *{categories}" th:object="${category}">[[ *{name} ]]</span>
+							</div>
+							<div>
+								<a th:href="@{/update/{id} (id=*{id})}" class="btn btn-warning text-white">Update <i class="fa-solid fa-pen"></i></a>
+								<a th:href="@{/delete/{id} (id=*{id})}" class="btn btn-danger">Delete <i class="fa-solid fa-trash"></i></a>
+							</div>
 				  	 	  </div>
 					</div> 
 				</a>

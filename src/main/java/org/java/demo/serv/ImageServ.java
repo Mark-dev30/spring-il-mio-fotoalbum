@@ -26,6 +26,10 @@ public class ImageServ {
 		
 		return imageRepo.findByTitleContaining(title);
 	}
+	public List<Image> findByTitleContainingAndUserId(String title, int userid){
+		
+		return imageRepo.findByTitleContainingAndUserId(title, userid);
+	}
 	
 	public Optional<Image> findById(int id){
 		

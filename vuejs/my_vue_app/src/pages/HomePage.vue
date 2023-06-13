@@ -32,6 +32,8 @@ export default {
             console.log(JSON.stringify(this.message));
             axios.post(this.urlimages + "message", this.message).then(res => {
             }).catch(err => console.log(err));
+            this.message.email = ""
+            this.message.message = ""
         }
     },
     mounted() {
@@ -46,7 +48,7 @@ export default {
         <div class="row mt-3">
             <h1>Images:</h1>
             <div class="col-6">
-                <input type="text" class="form-control" placeholder="Title" v-model="this.title">
+                <input type="text" class="form-control mb-2" placeholder="Title" v-model="this.title">
                 <button @click="searchImages()" class="btn btn-primary">Search</button>
             </div>
             <div class="row">
@@ -61,30 +63,23 @@ export default {
                 </div>
             </div>
         </div>
-    </div>
-
-    <!--     <h1>Images:</h1>
-    <div>
-        <input type="text" v-model="this.title">
-        <button @click="searchImages()">Search</button>
-        <ul>
-            <li v-for="image in images">
-                {{ image.title }}
-            </li>
-        </ul>
-    </div>
-    <h1>Send Message</h1>
-    <form @submit.prevent="sendMessage()">
-        <div>
-            <label>email</label>
-            <input type="email" name="email" v-model="message.email">
+        <div class="row justify-content-center mt-5">
+            <div class="col-6">
+                <h1>Send Message</h1>
+                <form @submit.prevent="sendMessage()">
+                    <div class="mb-3">
+                        <label class="form-label">email</label>
+                        <input class="form-control" type="email" name="email" v-model="message.email">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Text</label>
+                        <input class="form-control" type="text" name="message" v-model="message.message">
+                    </div>
+                    <input type="submit" value="CREATE" class="btn btn-primary">
+                </form>
+            </div>
         </div>
-        <div>
-            <label>Text</label>
-            <input type="text" name="message" v-model="message.message">
-        </div>
-        <input type="submit" value="CREATE">
-    </form> -->
+    </div>
 </template>
 
 <style scoped>

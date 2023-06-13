@@ -9,6 +9,7 @@ import org.java.demo.auth.pojo.User;
 import org.java.demo.auth.serv.UserServ;
 import org.java.demo.pojo.Category;
 import org.java.demo.pojo.Image;
+import org.java.demo.repo.ImageRepo;
 import org.java.demo.serv.CategoryServ;
 import org.java.demo.serv.ImageServ;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,7 @@ public class ImageController {
 	@Autowired
 	private UserServ userServ;
 	
+//	<------ ROTTA HOME ------>
 	@GetMapping("/")
 	public String getHome(Model model) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -47,10 +49,10 @@ public class ImageController {
 	            .anyMatch(role -> role.getAuthority().equals("ADMIN"));
 	    
 	    if (isAdmin) {
-	    	List<Image> imagesuser = user.getImage();
-	    	List<Image> images = imagesuser.stream()
+	    	List<Image> images = user.getImage().stream()
                     .filter(image -> image.isVisible())
                     .collect(Collectors.toList());
+	    	
 	    	
 	    	model.addAttribute("images",images);
 	    } else {
@@ -64,14 +66,36 @@ public class ImageController {
 		return "index";
 	}
 	
+//	<------ ROTTA FILTRO IMAGE PER TITOLO ------>
 	@PostMapping("/image/title")
 	public String getImageByTitle(Model model,@RequestParam(required = false) String title) {
-		List<Image> images = imageServ.findByNameContaining(title);
-		model.addAttribute("images", images);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User) authentication.getPrincipal();
+		int userid = user.getId();
+		boolean isAdmin = authentication.getAuthorities().stream()
+	            .anyMatch(role -> role.getAuthority().equals("ADMIN"));
+		if (isAdmin) {
+			List<Image> images = imageServ.findByTitleContainingAndUserId(title, userid);
+			model.addAttribute("images", images);
+			
+//			<------ Soluzione 2 ------>
+//			List<Image> images = user.getImage().stream()
+//		            .filter(image -> image.getTitle().contains(title))
+//		            .collect(Collectors.toList());
+//			model.addAttribute("images", images);
+		}
+		else {
+			List<Image> images = imageServ.findByNameContaining(title);
+			model.addAttribute("images", images);
+		}
+		
+		
 		model.addAttribute("title", title);
 		
 		return "index";
 	}
+	
+//	<------ ROTTA HOME ------>
 	@GetMapping("/show/{id}")
 	public String showImg(Model model,@PathVariable int id) {
 		Image image = imageServ.findById(id).get();

@@ -7,11 +7,25 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<div th:object="${image}">
-		<h1>Show [[ *{title} ]]</h1>
-		<img th:alt="@{${image.title}}" th:src="@{${image.url}}" width="150px">
-		<h6>[[ *{title} ]]</h6>
-		<p>[[ *{description} ]]</p>
+<div class="container">
+	<div class="row justify-content-center mt-5">
+		<div class="col-6">
+			<div class="card text-center" th:object="${image}">
+			  <div class="card-header">
+			    [[ *{title} ]]
+			  </div>
+			  <div class="card-body">
+			  	<img class="img-fluid" th:alt="@{${image.title}}" th:src="@{${image.url}}">
+			    <hr>
+			    <p class="card-text"> [[ *{description} ]]</p>
+			  </div>
+			  <div class="card-footer text-body-secondary">
+					<span class="badge text-bg-primary me-2" th:each="category : *{categories}" th:object="${category}">[[ *{name} ]]</span>		
+			  </div>
+			</div>
+		</div>
 	</div>
+</div>
+	
 </body>
 </html>

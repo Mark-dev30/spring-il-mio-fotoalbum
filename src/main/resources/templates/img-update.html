@@ -7,34 +7,52 @@
 <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-<h1></h1>
-	<form th:action="@{/update/{id} (id=*{id})}" method="POST" th:object="${image}">
-		<div th:classappend="${#authorization.expression('hasAuthority(''SUPERADMIN'')')} ? 'hidden' : ''">
-			<label>Title</label>
-			<input type="text" name="title" th:value="*{title}">
-			<label class="text-danger" th:if="${errors != null && errors.hasFieldErrors('title')}">[[ ${errors.getFieldError('title').defaultMessage}]]</label>
-			<label>Description</label>
-			<input type="text" name="description" th:value="*{description}">
-			<label class="text-danger" th:if="${errors != null && errors.hasFieldErrors('description')}">[[ ${errors.getFieldError('description').defaultMessage}]]</label>
-			<label>Url</label>
-			<input type="text" name="url" th:value="*{url}">
-			<label class="text-danger" th:if="${errors != null && errors.hasFieldErrors('url')}">[[ ${errors.getFieldError('url').defaultMessage}]]</label>
-		</div>
-		<label>Visible</label>
-		<input type="checkbox" role="switch" name="visible" sec:authorize="hasAuthority('SUPERADMIN')" th:checked="${image.isVisible() == true}">
-		<div th:classappend="${#authorization.expression('hasAuthority(''SUPERADMIN'')')} ? 'hidden' : ''">
-			<div class="form-check" th:each="category : ${categories}" th:object="${category}">
-				<input th:id="${'category-' + category.id}" th:value="*{id}" th:checked="${image.categories.contains(category)}" class="form-check-input" type="checkbox" name="categories" >
-				<label th:for="${'category-' + category.id}" class="form-check-label">
-					[[ *{name} ]]
-				</label>
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<h1>Update Image</h1>
+				<form th:action="@{/update/{id} (id=*{id})}" method="POST" th:object="${image}">
+					<div th:classappend="${#authorization.expression('hasAuthority(''SUPERADMIN'')')} ? 'hidden' : ''">
+						<div class="mb-3 row">
+							<label>Title</label>
+							<div class="col-sm-10">
+								<input class="form-control" type="text" name="title" th:value="*{title}">
+							</div>
+							<label class="text-danger" th:if="${errors != null && errors.hasFieldErrors('title')}">[[ ${errors.getFieldError('title').defaultMessage}]]</label>
+						</div>
+						<div class="mb-3 row">
+							<label>Description</label>
+							<div class="col-sm-10">
+								<input class="form-control" type="text" name="description" th:value="*{description}">
+							</div>
+							<label class="text-danger" th:if="${errors != null && errors.hasFieldErrors('description')}">[[ ${errors.getFieldError('description').defaultMessage}]]</label>
+						</div>
+						
+						<div class="mb-3 row">
+							<label>Url</label>
+							<div class="col-sm-10">
+								<input class="form-control" type="text" name="url" th:value="*{url}">
+							</div>
+							<label class="text-danger" th:if="${errors != null && errors.hasFieldErrors('url')}">[[ ${errors.getFieldError('url').defaultMessage}]]</label>
+						</div>
+					</div>
+					<label>Visible</label>
+					<input type="checkbox" role="switch" name="visible" sec:authorize="hasAuthority('SUPERADMIN')" th:checked="${image.isVisible() == true}">
+					<div th:classappend="${#authorization.expression('hasAuthority(''SUPERADMIN'')')} ? 'hidden' : ''">
+						<div class="form-check" th:each="category : ${categories}" th:object="${category}">
+							<input th:id="${'category-' + category.id}" th:value="*{id}" th:checked="${image.categories.contains(category)}" class="form-check-input" type="checkbox" name="categories" >
+							<label th:for="${'category-' + category.id}" class="form-check-label">
+								[[ *{name} ]]
+							</label>
+						</div>
+						<select name="user" th:value="image.user.id" hidden>
+							<option th:each="user : ${users}" th:object="${user}" th:selected="${image.user.id} == *{id}" th:value="*{id}">[[ *{id}]]</option>
+						</select>
+					</div>
+					<button class="btn btn-primary" type="submit" value="UPDATE">Submit</button>
+				</form>
 			</div>
-			<select name="user" th:value="image.user.id" hidden>
-				<option th:each="user : ${users}" th:object="${user}" th:selected="${image.user.id} == *{id}" th:value="*{id}">[[ *{id}]]</option>
-			</select>
 		</div>
-		<button class="btn btn-primary" type="submit" value="UPDATE">Submit</button>
-		
-	</form>
+	</div>
 </body>
 </html>

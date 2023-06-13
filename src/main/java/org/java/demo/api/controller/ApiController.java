@@ -32,15 +32,13 @@ public class ApiController {
 	public ResponseEntity<List<Image>> getImage(@RequestParam(required = false) String title){
 		
 		if(title == null) {
-			List<Image> imagesAll = imageServ.findAll();
-			List<Image> images = imagesAll.stream()
+			List<Image> images = imageServ.findAll().stream()
                     .filter(image -> image.isVisible())
                     .collect(Collectors.toList());
 			return new ResponseEntity<>(images, HttpStatus.OK);
 		}
 		else {
-			List<Image> imagesAll = imageServ.findByNameContaining(title);
-			List<Image> images = imagesAll.stream()
+			List<Image> images = imageServ.findByNameContaining(title).stream()
                     .filter(image -> image.isVisible())
                     .collect(Collectors.toList());
 			
